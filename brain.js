@@ -14,8 +14,8 @@ const announceClick = (e) => {
         const rect = funCont.getBoundingClientRect();
         grabXPOS = e.clientX - rect.left;
 
-        console.log(`Grabbed letter ${e.currentTarget.innerHTML}`)
-        console.log(`Grab Index is: ${getGrabIndex(grabXPOS)}`)
+        // console.log(`Grabbed letter ${e.currentTarget.innerHTML}`)
+        // console.log(`Grab Index is: ${getGrabIndex(grabXPOS)}`)
     }
 }
 
@@ -47,14 +47,14 @@ const announceUp = (e) => {
         const rect = funCont.getBoundingClientRect();
         lastXPOS = e.clientX - rect.left;
 
-        console.log(`Last position of mouse is ${lastXPOS}`)
-        console.log(`expected index is: ${getExpectedIndex(lastXPOS)}`)
+        // console.log(`Last position of mouse is ${lastXPOS}`)
+        // console.log(`expected index is: ${getExpectedIndex(lastXPOS)}`)
 
-        console.log(`Let go of letter ${grabLetter.innerHTML}`)
-        console.log(`Grab X Pos is: ${grabXPOS}`)
+        // console.log(`Let go of letter ${grabLetter.innerHTML}`)
+        // console.log(`Grab X Pos is: ${grabXPOS}`)
         letterShifter(grabXPOS, lastXPOS, grabLetter.innerHTML);
         grabLetter = ""
-        console.log(`Grabbed letter is now ${grabLetter}`);
+        // console.log(`Grabbed letter is now ${grabLetter}`);
 
         generateLetters();
     } else {
@@ -104,3 +104,22 @@ const letterShifter = (grabPos, dropPos, letter) => {
     console.log(letters)
 }
 
+const posDetector = (e) => {
+    
+    const rect = funCont.getBoundingClientRect();
+    const currXPos = e.clientX - rect.left;
+
+    const dist = grabXPOS - currXPos;
+
+    if (grabLetter) {
+        // console.log(currXPos)
+        // console.log(`distance from where you grabbed: ${dist}`)
+        grabLetter.style.transform = `translateX(${dist * -1}px)`
+        console.log(`You will be at: ${getExpectedIndex(currXPos)}`)
+    } else {
+        // console.log(`no letter but your mouse is at: ${currXPos}`)
+        // console.log(`targetIndex: ${getExpectedIndex(currXPos)}`)
+    }
+}
+
+funCont.addEventListener('mousemove', posDetector)
