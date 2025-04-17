@@ -3,9 +3,9 @@
 }
 
 .funtime-letter{
-    font-family: "Shippori Mincho B1", serif;
+    font-family: "Lekton", monospace;
     font-weight: 800;
-    font-size: 48px;
+    font-size: 52px;
     color: #121212;
     display: flex;
     justify-content: center;
@@ -18,9 +18,16 @@
 -moz-user-select: none;
 -ms-user-select: none;
 user-select: none;
+transition: 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .funtime-space{
     width: 44px;
     height: 48px;
 }
+/* 
+#funtime-container{
+    border-top: #121212 1px solid;
+    border-bottom: #121212 1px solid;
+    padding-bottom: 10px;
+} */
