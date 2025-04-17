@@ -1,4 +1,26 @@
-let letters = ['I', "'", 'M', ' ', 'J', 'U', 'S', 'T', ' ', 'H', 'A', 'V', 'I', 'N', 'G', ' ', 'F', 'U', 'N'];
+// let letters = ['I', "'", 'M', ' ', 'J', 'U', 'S', 'T', ' ', 'H', 'A', 'V', 'I', 'N', 'G', ' ', 'F', 'U', 'N'];
+
+let letters = [
+    { letter: 'I', id: 'letter_i1' },
+    { letter: "'", id: "letter_'2" },
+    { letter: 'M', id: 'letter_m3' },
+    { letter: ' ', id: 'space_4' },
+    { letter: 'J', id: 'letter_j5' },
+    { letter: 'U', id: 'letter_u6' },
+    { letter: 'S', id: 'letter_s7' },
+    { letter: 'T', id: 'letter_t8' },
+    { letter: ' ', id: 'space_9' },
+    { letter: 'H', id: 'letter_h10' },
+    { letter: 'A', id: 'letter_a11' },
+    { letter: 'V', id: 'letter_v12' },
+    { letter: 'I', id: 'letter_i13' },
+    { letter: 'N', id: 'letter_n14' },
+    { letter: 'G', id: 'letter_g15' },
+    { letter: ' ', id: 'space_16' },
+    { letter: 'F', id: 'letter_f17' },
+    { letter: 'U', id: 'letter_u18' },
+    { letter: 'N', id: 'letter_n19' }
+  ]
 
 const funCont = document.getElementById("funtime-container");
 const contWidth = funCont.offsetWidth
@@ -24,7 +46,8 @@ const generateLetters = () => {
 
     Array.from(letters).forEach(letter => {
         const letterNode = document.createElement("div")
-        letterNode.innerHTML = letter
+        letterNode.innerHTML = letter.letter
+        letterNode.id = letter.id
         letterNode.classList.add("funtime-letter")
         if (letter === " ") {
             letterNode.classList.add("funtime-space")
@@ -52,7 +75,7 @@ const announceUp = (e) => {
 
         // console.log(`Let go of letter ${grabLetter.innerHTML}`)
         // console.log(`Grab X Pos is: ${grabXPOS}`)
-        letterShifter(grabXPOS, lastXPOS, grabLetter.innerHTML);
+        letterShifter(grabXPOS, lastXPOS, grabLetter);
         grabLetter = ""
         // console.log(`Grabbed letter is now ${grabLetter}`);
 
@@ -91,12 +114,17 @@ const getGrabIndex = (xPos) => {
 const letterShifter = (grabPos, dropPos, letter) => {
     let tLetters = letters.slice();
 
+    const letterObj = {
+        letter: letter.innerHTML,
+        id: letter.id
+    }
+
     console.log(grabXPOS)
     console.log(grabPos)
     console.log(getGrabIndex(grabPos))
     tLetters.splice(getGrabIndex(grabPos), 1); // "delete" the letter that is grabbed
     console.log(tLetters)
-    tLetters.splice(getExpectedIndex(dropPos), 0, letter);
+    tLetters.splice(getExpectedIndex(dropPos), 0, letterObj);
     console.log(tLetters)
 
     letters = tLetters;
@@ -111,11 +139,29 @@ const posDetector = (e) => {
 
     const dist = grabXPOS - currXPos;
 
+    // console.log(funCont.children[getExpectedIndex(currXPos)])
+
+    const toSwitch = funCont.children[getExpectedIndex(currXPos)]
+
     if (grabLetter) {
-        // console.log(currXPos)
-        // console.log(`distance from where you grabbed: ${dist}`)
         grabLetter.style.transform = `translateX(${dist * -1}px)`
-        console.log(`You will be at: ${getExpectedIndex(currXPos)}`)
+        // console.log(`You will be at: ${getExpectedIndex(currXPos)}`)
+        console.log(toSwitch)
+
+        const switchInd = getCurrLetterIndex(toSwitch.id)
+        const grabInd = getCurrLetterIndex(grabLetter.id)
+
+        console.log(`Switch Index: ${switchInd}`)
+        console.log(`Grab Index: ${grabInd}`)
+
+        if (grabLetter.id !== toSwitch.id ) {
+            // toSwitch.style.transform = `translateX(44px)`
+            if (grabInd < switchInd) {
+                toSwitch.style.transform = `translateX(-44px)`
+            } else {
+                toSwitch.style.transform = `translateX(44px)`
+            }
+        }
     } else {
         // console.log(`no letter but your mouse is at: ${currXPos}`)
         // console.log(`targetIndex: ${getExpectedIndex(currXPos)}`)
@@ -123,3 +169,7 @@ const posDetector = (e) => {
 }
 
 funCont.addEventListener('mousemove', posDetector)
+
+const getCurrLetterIndex = (id) => {
+    return letters.findIndex(lObj => lObj.id == id);
+}
