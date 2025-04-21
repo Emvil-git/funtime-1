@@ -166,34 +166,28 @@ const posDetector = (e) => {
         console.log(`Switch Index: ${switchInd}`)
         console.log(`Last Switch Index: ${lastSwitchInd}`)
         console.log(`Grab Index: ${grabInd}`)
-
-        if (grabLetter.id !== toSwitch.id ) { // if switch index is not the same as the grab index
             
-            if (grabInd < switchInd) {
-                if (switchInd > lastSwitchInd) {
-                    funCont.children[lastSwitchInd].style.transform = "translateX(-44px)"
-                } else if (switchInd < lastSwitchInd){
-                    funCont.children[lastSwitchInd].style.transform = "translateX(0px)"
-                }
-                toSwitch.style.transform = `translateX(-44px)`
-            } else {
-                if (switchInd > lastSwitchInd) {
-                    funCont.children[lastSwitchInd].style.transform = "translateX(0px)"
-                } //else if (switchInd < lastSwitchInd){
-                //     funCont.children[lastSwitchInd].style.transform = "translateX(-44px)"
-                // }
-                toSwitch.style.transform = `translateX(44px)`
+        if (grabInd < switchInd) {
+            if (switchInd > lastSwitchInd) {
+                funCont.children[lastSwitchInd].style.transform = "translateX(-44px)"
+            } else if (switchInd < lastSwitchInd){
+                funCont.children[lastSwitchInd].style.transform = "translateX(0px)"
             }
+            toSwitch.style.transform = `translateX(-44px)`
+        } else if (grabInd > switchInd) {
+            if (switchInd > lastSwitchInd) {
+                funCont.children[lastSwitchInd].style.transform = "translateX(0px)"
+            } //else if (switchInd < lastSwitchInd){
+            //     funCont.children[lastSwitchInd].style.transform = "translateX(-44px)"
+            // }
+            toSwitch.style.transform = `translateX(44px)`
         } else {
-            [...funCont.children].forEach(node => node.style.transform = "translateX(0)")
+            funCont.children[lastSwitchInd].style.transform = "translateX(0px)"
         }
-    } else {
-        // console.log(`no letter but your mouse is at: ${currXPos}`)
-        // console.log(`targetIndex: ${getExpectedIndex(currXPos)}`)
     }
 }
 
-document.addEventListener('mousemove', posDetector)
+funCont.addEventListener('mousemove', posDetector)
 
 const getCurrLetterIndex = (id) => {
     return letters.findIndex(lObj => lObj.id == id);
